@@ -1,0 +1,20 @@
+<html>
+    <head>
+
+    </head>
+    <body onload="lock.show();">
+    <script src="https://cdn.auth0.com/js/lock/11.3.0/lock.min.js"></script>
+    <script>
+        var lock = new Auth0Lock('umW9qQGfeynUMuEZzino0IvF4d0U4QNs', 'hengel28.auth0.com', {
+            auth: {
+                audience: 'https://api.docli.com',
+                redirectUrl: 'http://localhost:3000/code',
+                responseType: 'code',
+                params: {
+                    scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+                }
+            }
+        });
+    </script>
+    </body>
+</html>
