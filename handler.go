@@ -8,6 +8,7 @@ import (
 	"os"
 	"github.com/hengel2810/client_docli/api"
 	"github.com/hengel2810/client_docli/docker"
+	"strings"
 )
 
 func HandleLogin()  {
@@ -34,14 +35,17 @@ func HandleUpload() {
 		}
 		tempPath := os.TempDir()
 		fileName := *imageId + ".tar"
-		filePath := tempPath + fileName
+		escapedFileName := strings.Replace(fileName, "/", "_", -1)
+		filePath := tempPath + escapedFileName
 		copied := docker.CopyImage(*imageId, filePath)
 		if copied {
-			postError, statusCode := api.PostFile(fileName, filePath, "http://localhost:8000/image", *imageId)
+			//url := "http://46.101.222.225:8000/image"
+			url := "http://localhost:8000/image"
+			postError, statusCode := api.PostFile(fileName, filePath, url, *imageId)
 			if postError == nil && statusCode == 200 {
 				fmt.Println("Image uploaded")
 			} else {
-				fmt.Println("Error while uploading image")
+				fmt.Println("Error while uploading image! StatusCode:", statusCode)
 			}
 		} else {
 			fmt.Println("Error while copying image")

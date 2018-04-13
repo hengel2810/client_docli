@@ -3,50 +3,54 @@ package api
 import (
 	"bytes"
 	"mime/multipart"
-	"fmt"
 	"os"
 	"io"
 	"net/http"
-	"io/ioutil"
+	"fmt"
+	"github.com/hengel2810/client_docli/config"
 )
 
 func PostFile(filename string, filepath string, targetUrl string, imageId string) (error, int) {
-	bodyBuf := &bytes.Buffer{}
-	bodyWriter := multipart.NewWriter(bodyBuf)
-	fileWriter, err := bodyWriter.CreateFormFile("file", filename)
+	file, err := os.Open(filepath)
 	if err != nil {
-		fmt.Println("error writing to buffer")
+		fmt.Println("error open file")
 		return err, 900
 	}
-	fh, err := os.Open(filepath)
+	defer file.Close()
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	part, err := writer.CreateFormFile("file", filename)
 	if err != nil {
-		fmt.Println("error opening file")
+		fmt.Println("error create form file")
 		return err, 900
 	}
-	defer fh.Close()
-	_, err = io.Copy(fileWriter, fh)
-	if err != nil {
-		return err, 900
-	}
-	err = bodyWriter.WriteField("image", imageId)
+	err = writer.WriteField("image", imageId)
 	if err != nil {
 		fmt.Println("error writing image field")
 		return err, 900
 	}
-	contentType := bodyWriter.FormDataContentType()
-	err = bodyWriter.Close()
+	io.Copy(part, file)
+	err = writer.Close()
 	if err != nil {
-		fmt.Println("error closing bodywriter")
+		fmt.Println("error writer close")
 		return err, 900
 	}
-	resp, err := http.Post(targetUrl, contentType, bodyBuf)
+	r, err := http.NewRequest("POST", targetUrl, body)
 	if err != nil {
+		fmt.Println("error creating reuqest")
 		return err, 900
 	}
-	defer resp.Body.Close()
-	_, err = ioutil.ReadAll(resp.Body)
+	r.Header.Add("Content-Type", writer.FormDataContentType())
+	cfg, err := config.LoadTokenConfig()
 	if err != nil {
+		fmt.Println("error load config")
 		return err, 900
 	}
-	return nil, resp.StatusCode
+	r.Header.Add("Authorization", "Bearer " + cfg.AccessToken)
+	client := &http.Client{}
+	res, err := client.Do(r)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nil, res.StatusCode
 }
