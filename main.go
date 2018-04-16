@@ -11,12 +11,12 @@ func main() {
 		fmt.Println("The most commonly used git commands are: ")
 		fmt.Println(" login   Login")
 		fmt.Println(" logout  Logout")
-		fmt.Println(" upload  Upload image to docli server")
+		fmt.Println(" start  Upload image with YAML file to docli server")
 		return
 	}
 	switch os.Args[1] {
-	case "upload":
-		HandleUpload()
+	case "start":
+		HandleUploadFromConfig()
 	case "login":
 		HandleLogin()
 	case "logout":

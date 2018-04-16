@@ -7,38 +7,25 @@ import (
 	"github.com/docker/docker/api/types"
 	"io"
 	"os"
-	"github.com/hengel2810/client_docli/config"
-	"github.com/satori/go.uuid"
 	"github.com/hengel2810/client_docli/models"
 	"errors"
 )
 
-func UploadDockerImage(imageId string) (models.DockerImageUpload, error) {
-	cfg, err := config.LoadTokenConfig()
-	if err != nil {
-		return models.DockerImageUpload{}, errors.New("error load config")
-	}
-	registryURL := "46.101.222.225:5000"
-
-	uniqueImageTag, err := uuid.NewV4()
-	if err != nil {
-		return models.DockerImageUpload{}, errors.New("error on unique tag creation")
-	}
-	newImageName := registryURL + "/" + cfg.UserId + "/" + uniqueImageTag.String() + "/" + imageId
-	result := tagImage(imageId, newImageName)
+func UploadDockerImage(docliObject models.DocliObject) error {
+	result := tagImage(docliObject.OriginalName, docliObject.FullName)
 	if result == false {
-		return models.DockerImageUpload{}, errors.New("Error while tagging image")
+		return errors.New("Error while tagging image")
 	}
-	result = pushImage(newImageName)
+	result = pushImage(docliObject.FullName)
 	if result == false {
-		return models.DockerImageUpload{}, errors.New("Error while pushing image")
+		return errors.New("Error while pushing image")
 	}
-	result = removeTaggedImage(newImageName)
+	result = removeTaggedImage(docliObject.FullName)
 	if result == false {
 		fmt.Println("Error while untagging image")
-		return models.DockerImageUpload{}, errors.New("Error while untagging image")
+		return errors.New("Error while untagging image")
 	}
-	return models.DockerImageUpload{FullName:newImageName, UserId:cfg.UserId, OriginalName:imageId, UniqueId:uniqueImageTag.String()}, nil
+	return nil
 }
 
 func tagImage(old string, new string) bool {
