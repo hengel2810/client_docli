@@ -2,7 +2,6 @@ package docker
 
 import (
 	"github.com/docker/docker/client"
-	"fmt"
 	"golang.org/x/net/context"
 	"github.com/docker/docker/api/types"
 	"io"
@@ -12,63 +11,58 @@ import (
 )
 
 func UploadDockerImage(docliObject models.DocliObject) error {
-	result := tagImage(docliObject.OriginalName, docliObject.FullName)
-	if result == false {
+	err := tagImage(docliObject.OriginalName, docliObject.FullName)
+	if err != nil {
 		return errors.New("Error while tagging image")
 	}
-	result = pushImage(docliObject.FullName)
-	if result == false {
+	err = pushImage(docliObject.FullName)
+	if err != nil {
 		return errors.New("Error while pushing image")
 	}
-	result = removeTaggedImage(docliObject.FullName)
-	if result == false {
-		fmt.Println("Error while untagging image")
+	err = removeTaggedImage(docliObject.FullName)
+	if err != nil {
 		return errors.New("Error while untagging image")
 	}
 	return nil
 }
 
-func tagImage(old string, new string) bool {
+func tagImage(old string, new string) error {
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return errors.New("Error while creating docker client")
 	}
 	err = cli.ImageTag(context.Background(), old, new)
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return errors.New("Error tagging image")
 	}
-	return true
+	return nil
 }
 
-func pushImage(image string) bool {
+func pushImage(image string) error {
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return errors.New("Error while creating docker client")
 	}
 	closer, err := cli.ImagePush(context.Background(), image, types.ImagePushOptions{All: false, RegistryAuth:"123"})
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return errors.New("Error pushing image")
 	}
 	_, err = io.Copy(os.Stdout, closer)
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return errors.New("Error copy image")
 	}
 	closer.Close()
-	return true
+	return nil
 }
 
-func removeTaggedImage(image string) bool {
+func removeTaggedImage(image string) error {
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return errors.New("Error while creating docker client")
 	}
-	resp, err := cli.ImageRemove(context.Background(), image, types.ImageRemoveOptions{Force:true})
-	fmt.Println(resp)
-	return true
+	_, err = cli.ImageRemove(context.Background(), image, types.ImageRemoveOptions{Force:true})
+	if err != nil {
+		return errors.New("Error removing image")
+	}
+	return nil
 }

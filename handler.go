@@ -9,6 +9,7 @@ import (
 	"github.com/hengel2810/client_docli/docker"
 	"flag"
 	"os"
+	"github.com/hengel2810/client_docli/api"
 )
 
 func HandleLogin()  {
@@ -46,6 +47,7 @@ func HandleUploadFromConfig() {
 				if err != nil {
 					fmt.Println(err)
 				} else {
+					api.PostImageData(docli)
 					fmt.Println("Image sucessfully pushed")
 				}
 			}
