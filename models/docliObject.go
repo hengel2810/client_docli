@@ -11,6 +11,6 @@ type DocliObject struct {
 }
 
 type PortObject struct {
-	InternalPort int `json:"ex"`
-	ExternalPort int `json:"int"`
+	Container int `json:"container"`
+	Host int `json:"host"`
 }
