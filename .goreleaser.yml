@@ -1,8 +1,13 @@
 builds:
-  - binary: docli
-    goos:
-      - windows
-      - darwin
-      - linux
-    goarch:
-      - amd64
+  - main: main.go
+binary: docli
+goos:
+  - windows
+  - darwin
+  - linux
+goarch:
+  - amd64
+  - arm64
+
+archive:
+  format: tar.gz

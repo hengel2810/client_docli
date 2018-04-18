@@ -8,10 +8,9 @@ before_install:
   - chmod +x $GOPATH/bin/dep
 install:
   - dep ensure
-script:
-  - git tag -a v0.1.0 -m "First release"
-  - git push origin v0.1.0
-  - goreleaser
+after_success:
+  - test -n "$TRAVIS_TAG" && curl -s https://raw.githubusercontent.com/goreleaser/get/master/latest | bash
+#  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
 
 env:
   global:
