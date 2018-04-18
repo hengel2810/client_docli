@@ -1,0 +1,23 @@
+[[dependencies]]
+  branch = "master"
+  name = "github.com/gorilla/context"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/docker/docker/client"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/dgrijalva/jwt-go"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/satori/go.uuid"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/ghodss/yaml"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/skratchdot/open-golang/open"
