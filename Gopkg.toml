@@ -11,8 +11,8 @@
   name = "github.com/dgrijalva/jwt-go"
 
 [[dependencies]]
-  name = 	"github.com/satori/go.uuid"
   revision = "063359185d32c6b045fa171ad7033ea545864fa1"
+  name = 	"github.com/satori/go.uuid"
 
 [[dependencies]]
   branch = "master"
