@@ -21,3 +21,7 @@
 [[dependencies]]
   branch = "master"
   name = "github.com/skratchdot/open-golang/open"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/goreleaser/goreleaser"
