@@ -24,7 +24,7 @@ func DocliObjectValid(docliObject models.DocliObject) bool {
 }
 
 func SetDocliObjectData(docliObject models.DocliObject) (models.DocliObject, error) {
-	registryURL := "46.101.222.225:5000"
+	registryURL := "registry.valas.cloud"
 	uniqueImageTag, err := uuid.NewV4()
 	if err != nil {
 		return docliObject, errors.New("Error creating uniqueImageId")
