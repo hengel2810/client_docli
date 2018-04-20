@@ -6,9 +6,11 @@ import (
 	"io/ioutil"
 	"os"
 	"fmt"
+	"time"
 )
 
 func SaveTokenConfig(tokenConfig models.TokenConfig) error {
+	tokenConfig.ExpiringDate = time.Now().Local().Add(time.Second * time.Duration(tokenConfig.ExpiresIn))
 	bytes, err := json.MarshalIndent(tokenConfig, "", "  ")
 	if err != nil {
 		return err

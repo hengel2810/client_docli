@@ -10,15 +10,15 @@ import (
 	"github.com/hengel2810/client_docli/controller"
 	"errors"
 	"strconv"
-	"fmt"
+	"github.com/hengel2810/client_docli/login"
 )
 
 func PostImageData(uploadImage models.DocliObject) error {
 	if controller.DocliObjectValid(uploadImage) == false {
 		return errors.New("invalid docli object")
 	}
-	//url := "http://46.101.222.225:8000/image"
-	url := "http://localhost:8000/image"
+	url := "https://api.valas.cloud/image"
+	//url := "http://localhost:8000/image"
 	data, err := json.Marshal(uploadImage)
 	if err != nil {
 		return errors.New("error json marshal docli object")
@@ -31,6 +31,12 @@ func PostImageData(uploadImage models.DocliObject) error {
 	if err != nil {
 		return errors.New("error load config")
 	}
+	//if cfg.ExpiringDate.Local().Second() < time.Now().Local().Second() {
+		cfg, err = login.RefreshToken()
+		if err != nil {
+			return err
+		}
+	//}
 	req.Header.Set("Authorization", "Bearer "+cfg.AccessToken)
 	req.Header.Set("Content-Type", "application/json")
 
@@ -39,16 +45,14 @@ func PostImageData(uploadImage models.DocliObject) error {
 	if err != nil {
 		return errors.New("error doing request")
 	}
-	body, err := ioutil.ReadAll(resp.Body)
+	_, err = ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		return errors.New("error reading request body")
 	} else {
-		fmt.Println(resp.StatusCode)
 		if resp.StatusCode == 200 {
 			return nil
 		} else {
-			fmt.Println(string(body))
 			errorMsg := "wrong status " +  strconv.Itoa(resp.StatusCode)
 			return errors.New(errorMsg)
 		}

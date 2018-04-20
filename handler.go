@@ -3,19 +3,19 @@ package main
 import (
 	"github.com/hengel2810/client_docli/config"
 	"fmt"
-	"github.com/hengel2810/client_docli/login"
 	"github.com/hengel2810/client_docli/fs"
 	"github.com/hengel2810/client_docli/controller"
 	"github.com/hengel2810/client_docli/docker"
 	"flag"
 	"os"
+	"github.com/hengel2810/client_docli/login"
 	"github.com/hengel2810/client_docli/api"
 )
 
 func HandleLogin()  {
 	configValid := config.ConfigValid()
 	if !configValid {
-		login.StartLoginServer()
+		login.StartLoginProcess()
 	} else {
 		fmt.Println("Already logged in. Please use 'docli logout' to logout before re-login")
 	}
@@ -47,8 +47,12 @@ func HandleUploadFromConfig() {
 				if err != nil {
 					fmt.Println(err)
 				} else {
-					api.PostImageData(docli)
-					fmt.Println("Image sucessfully pushed")
+					err := api.PostImageData(docli)
+					if err != nil {
+						fmt.Println("Error pushing image")
+					} else {
+						fmt.Println("Image sucessfully pushed")
+					}
 				}
 			}
 		}
