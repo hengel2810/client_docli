@@ -9,7 +9,7 @@ before_install:
 install:
   - dep ensure
 before_script:
-- if [$TRAVIS_TAG]; then echo 'Tag set';
+- if [ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST == "false" &&  $TRAVIS_TAG != ""]; then echo 'Tag set' fi
 - export GITHUB_TOKEN=$GITHUB_TOKEN
 after_success:
 - goreleaser
