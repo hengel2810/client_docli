@@ -1,13 +1,10 @@
 language: go
 go:
   - "1.10"
-services:
-- docker
+sudo: required
+
 before_install:
   - curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o $GOPATH/bin/dep
   - chmod +x $GOPATH/bin/dep
 install:
   - dep ensure
-env:
-  global:
-    secure: Hd/MjHIsA8Tnt83blcKKjTP/BeEGa6nnj8iBO20y0JmVAzOSfDR/WtUEmaqTPg/xcaxA8pLAx6aOAlqpQyvPmA7ZLH9qKAKuSLtoEyKJVCdLiWk6zcuz8ig8XxLFhMavT03fteyC7gUlGPg/2jzHRVNpzlk2v9Lu10w735axCeC9x7gxei0FeW959miXZQ+CCoS3ngyyXbysUNwm/rAL5fsiPhyeslZxrcyaR6wV1YEm6hqxIA3KShLu2p0pW3x2B0cXcjWdwOnkvOOVpSOeRp7uy49kCYp2MR3o/ex+TMsqM0BOHAQ2wjyZDR/yCbkI7E2EZs5m4cHh7pATan1IjueQ+t9ItIYRas3BzTMOfWL+2JKutHsUKmSbbF6zZ+57Jf6Jsh1CTolbsA0SAtqxyiiTmFEoNlhYPrXWOL8CQ4SE4L6yGCbGY5GcjSSDdpEUeI5q4b+Vb6BQ3ls+Hh7ymdRoDeeYBB89yMfndpS+rtmzhfQaftdig3LtFsPJOBkDkHFIPXUMyJbjEup/KHk3anpvlL2wjB7zCwzh34BPf4d3acodOlAQx9R1zCS6xgOp9Sj36sRIpt/WH+7fqM0WUrCrhbqPnCwDZTEePJAcOByauQq8whFWO49M+zDywsIL7AWJSHcWY9sJZQ/KFljm+V4WEl+l1yedwP1gln6B0nw=
