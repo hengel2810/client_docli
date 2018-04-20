@@ -3,8 +3,12 @@ go:
   - "1.10"
 services:
 - docker
+before_script:
+- export GITHUB_TOKEN=$GITHUB_TOKEN
+- git tag -a v0.1.0 -m "First release"
+- git push origin v0.1.0
 after_success:
-- test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
+- goreleaser
 - ls -lf
 env:
   global:
