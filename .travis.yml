@@ -4,7 +4,7 @@ go:
 services:
 - docker
 after_success:
-- curl -sL https://git.io/goreleaser | bash
+- test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
 - ls -lf
 env:
   global:
