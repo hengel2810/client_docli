@@ -25,3 +25,7 @@
 [[dependencies]]
   branch = "master"
   name = "github.com/goreleaser/goreleaser"
+
+[[dependencies]]
+  branch = "master"
+  name = "github.com/crackcomm/go-clitable"

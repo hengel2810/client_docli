@@ -7,7 +7,7 @@ import (
 	"errors"
 )
 
-func DocliObjectValid(docliObject models.DocliObject) bool {
+func DocliObjectValid(docliObject models.DocliConfigObject) bool {
 	if docliObject.FullName == "" {
 		return false
 	}
@@ -23,7 +23,7 @@ func DocliObjectValid(docliObject models.DocliObject) bool {
 	return true
 }
 
-func SetDocliObjectData(docliObject models.DocliObject) (models.DocliObject, error) {
+func SetDocliObjectData(docliObject models.DocliConfigObject) (models.DocliConfigObject, error) {
 	registryURL := "registry.valas.cloud"
 	uniqueImageTag, err := uuid.NewV4()
 	if err != nil {

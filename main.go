@@ -21,6 +21,10 @@ func main() {
 		HandleLogin()
 	case "logout":
 		HandleLogout()
+	case "list":
+		HandleListDoclis()
+	case "remove":
+		HandleRemoveDocli()
 	default:
 		fmt.Printf("%q is not valid command.\n", os.Args[1])
 		os.Exit(2)

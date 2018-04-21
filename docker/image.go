@@ -10,7 +10,7 @@ import (
 	"errors"
 )
 
-func UploadDockerImage(docliObject models.DocliObject) error {
+func UploadDockerImage(docliObject models.DocliConfigObject) error {
 	err := tagImage(docliObject.OriginalName, docliObject.FullName)
 	if err != nil {
 		return errors.New("Error while tagging image")
