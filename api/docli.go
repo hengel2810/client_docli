@@ -59,8 +59,8 @@ func PostImageData(uploadImage models.DocliConfigObject) error {
 }
 
 func GetDoclis(userId string) ([]models.DocliObject, error) {
-	//url := "https://api.valas.cloud/images"
-	url := "http://localhost:8000/doclis?userId=" + userId
+	url := "https://api.valas.cloud/doclis?userId=" + userId
+	//url := "http://localhost:8000/doclis?userId=" + userId
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	cfg, err := config.LoadTokenConfig()
@@ -96,8 +96,8 @@ func GetDoclis(userId string) ([]models.DocliObject, error) {
 }
 
 func DeleteDocli(docliId string) error {
-	//url := "https://api.valas.cloud/images"
-	url := "http://localhost:8000/docli?docliId=" + docliId
+	url := "https://api.valas.cloud/docli?docliId=" + docliId
+	//url := "http://localhost:8000/docli?docliId=" + docliId
 	req, _ := http.NewRequest("DELETE", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	cfg, err := config.LoadTokenConfig()
