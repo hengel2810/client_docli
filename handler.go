@@ -49,6 +49,7 @@ func HandleUploadFromConfig() {
 				} else {
 					err := api.PostImageData(docli)
 					if err != nil {
+						fmt.Println(err)
 						fmt.Println("Error pushing image")
 					} else {
 						fmt.Println("Image sucessfully pushed")
@@ -95,6 +96,7 @@ func HandleRemoveDocli() {
 		strDocliId := *docliId
 		err := api.DeleteDocli(strDocliId)
 		if err != nil {
+			fmt.Println(err)
 			fmt.Println("Error deleting docli: " + strDocliId)
 		}
 	}

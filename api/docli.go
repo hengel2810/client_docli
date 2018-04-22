@@ -12,12 +12,13 @@ import (
 	"strconv"
 )
 
+//var baseURL := "https://api.valas.cloud"
+var baseURL = "http://localhost:8000"
 func PostImageData(uploadImage models.DocliConfigObject) error {
 	if controller.DocliObjectValid(uploadImage) == false {
 		return errors.New("invalid docli object")
 	}
-	url := "https://api.valas.cloud/docli"
-	//url := "http://localhost:8000/image"
+	url := baseURL + "/docli"
 	data, err := json.Marshal(uploadImage)
 	if err != nil {
 		return errors.New("error json marshal docli object")
@@ -44,7 +45,7 @@ func PostImageData(uploadImage models.DocliConfigObject) error {
 	if err != nil {
 		return errors.New("error doing request")
 	}
-	_, err = ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		return errors.New("error reading request body")
@@ -52,15 +53,14 @@ func PostImageData(uploadImage models.DocliConfigObject) error {
 		if resp.StatusCode == 200 {
 			return nil
 		} else {
-			errorMsg := "wrong status " +  strconv.Itoa(resp.StatusCode)
+			errorMsg := "wrong status " +  strconv.Itoa(resp.StatusCode) + " - " + string(body)
 			return errors.New(errorMsg)
 		}
 	}
 }
 
 func GetDoclis(userId string) ([]models.DocliObject, error) {
-	url := "https://api.valas.cloud/doclis?userId=" + userId
-	//url := "http://localhost:8000/doclis?userId=" + userId
+	url := baseURL + "/doclis?userId=" + userId
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	cfg, err := config.LoadTokenConfig()
@@ -96,8 +96,7 @@ func GetDoclis(userId string) ([]models.DocliObject, error) {
 }
 
 func DeleteDocli(docliId string) error {
-	url := "https://api.valas.cloud/docli?docliId=" + docliId
-	//url := "http://localhost:8000/docli?docliId=" + docliId
+	url := baseURL + "/docli?docliId=" + docliId
 	req, _ := http.NewRequest("DELETE", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	cfg, err := config.LoadTokenConfig()

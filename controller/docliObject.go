@@ -36,5 +36,6 @@ func SetDocliObjectData(docliObject models.DocliConfigObject) (models.DocliConfi
 	}
 	newImageName := registryURL + "/" + cfg.UserId + "/" + uniqueImageTag.String() + "/" + docliObject.OriginalName
 	docliObject.FullName = newImageName
+	docliObject.UserId = cfg.UserId
 	return docliObject, nil
 }
