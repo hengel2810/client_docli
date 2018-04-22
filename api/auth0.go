@@ -47,8 +47,7 @@ func StartLoginProcess() {
 	response := "response_type=code&"
 	clientId := "client_id=umW9qQGfeynUMuEZzino0IvF4d0U4QNs&"
 	redirectURI := "redirect_uri=http://localhost&"
-	//state := "state={OPAQUE_VALUE}"
-	url = url + audience + scope + response + clientId + redirectURI //+ state
+	url = url + audience + scope + response + clientId + redirectURI
 	startLocalLoginServer()
 	open.RunWith(url, "Google Chrome")
 	wg.Wait()
